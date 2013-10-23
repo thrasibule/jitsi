@@ -1,0 +1,17 @@
+--- build.xml.orig	2013-10-22 20:49:22.322261839 -0400
++++ build.xml	2013-10-22 20:50:23.085260059 -0400
+@@ -96,13 +96,11 @@
+ 		</copy>
+ 	</target>
+ 
+-	<target name="makejarFat" depends="delete.classfiles,build">
++	<target name="makejarFat" depends="build">
+ 		<jar destfile="${project.name}-${project.version}.jar" basedir="${builddir}" update="false" manifest="manifest.mf">
+ 			<include name="**/*.class" />
+ 		</jar>
+ 		<!-- rebuild test classes as eclipse would show errors afterwards. -->
+-		<antcall target="build.test">
+-		</antcall>
+ 	</target>
+ 
+ 	<target name="zip.binaries" depends="makejarBinary">
