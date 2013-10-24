@@ -18,7 +18,7 @@ KEYWORDS="~x86"
 
 IUSE=""
 
-COMMON_DEP=""
+COMMON_DEP="dev-java/commons-codec:0"
 
 RDEPEND=">=virtual/jre-1.5
 	${COMMON_DEP}"
