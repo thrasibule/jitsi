@@ -26,15 +26,17 @@ DEPEND=">=virtual/jdk-1.5
 	app-arch/unzip
 	${COMMON_DEP}"
 
+JAVA_ANT_REWRITE_CLASSPATH="true"
 EANT_BUILD_TARGET="makejarFat"
 EANT_DOC_TARGET=""
+EANT_GENTOO_CLASSPATH="xmlgraphics-commons:1.5"
 
 java_prepare() {
 	epatch "${FILESDIR}/build.patch"
 	find . -name '*.jar' -delete|| die
-	pushd ext
-	java-pkg_jar-from xmlgraphics-commons-1.5
-	popd
+	#pushd ext
+	#java-pkg_jar-from xmlgraphics-commons-1.5
+	#popd
 }
 
 src_install() {
