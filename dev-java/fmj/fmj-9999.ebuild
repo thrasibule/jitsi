@@ -27,14 +27,12 @@ DEPEND=">=virtual/jdk-1.5
 	app-arch/unzip
 	${COMMON_DEP}"
 
+JAVA_ANT_REWRITE_CLASSPATH="true"
 EANT_BUILD_TARGET="jar-jitsi"
+EANT_GENTOO_CLASSPATH="commons-math-3,jchart2d"
 
 java_prepare() {
 	find . -name *.jar -delete|| die
-	pushd lib
-	java-pkg_jar-from commons-math-3 commons-math.jar commons-math3-3.2.jar
-	java-pkg_jar-from jchart2d jchart2d.jar jchart2d-3.2.2.jar
-	popd
 }
 
 src_install() {
