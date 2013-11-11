@@ -12,7 +12,7 @@ DESCRIPTION=""
 HOMEPAGE=""
 EGIT_REPO_URI="http://github.com/jitsi/libjitsi.git"
 
-LICENSE=""
+LICENSE="LGPL"
 SLOT="0"
 KEYWORDS="~x86"
 
