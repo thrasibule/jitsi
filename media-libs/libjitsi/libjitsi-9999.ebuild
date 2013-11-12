@@ -36,7 +36,7 @@ DEPEND=">=virtual/jdk-1.6
 	${COMMON_DEP}"
 
 JAVA_ANT_REWRITE_CLASSPATH="true"
-EANT_BUILD_TARGET="compile"
+EANT_BUILD_TARGET="rebuild"
 EANT_DOC_TARGET=""
 EANT_GENTOO_CLASSPATH="bcprov,bccontrib,bcpkix,fmj,ice4j,jsip,json-simple,osgi-core-api,sdes4j,zrtp4j"
 
