@@ -8,11 +8,11 @@ JAVA_PKG_IUSE="doc source"
 
 inherit java-pkg-2 java-ant-2 git-r3
 
-DESCRIPTION=""
+DESCRIPTION="Support for common \"feel\" widgets in look-and-feel libraries"
 HOMEPAGE=""
 EGIT_REPO_URI="http://github.com/kirillcool/laf-widget.git"
 
-LICENSE=""
+LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~x86"
 

@@ -8,13 +8,13 @@ JAVA_PKG_IUSE="doc source"
 
 inherit java-pkg-2 java-ant-2 subversion
 
-DESCRIPTION=""
+DESCRIPTION="Support for common \"feel\" widgets in look-and-feel libraries"
 HOMEPAGE=""
 ESVN_REPO_URI="https://svn.java.net/svn/"${PN}"~svn/tags/release_4_3_larkspur"
 
-LICENSE=""
+LICENSE="BSD"
 SLOT="4.3"
-KEYWORDS=""
+KEYWORDS="~x86"
 
 IUSE=""
 
