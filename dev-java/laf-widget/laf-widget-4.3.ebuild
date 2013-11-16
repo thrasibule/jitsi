@@ -38,5 +38,5 @@ src_prepare() {
 }
 
 src_install() {
-	java-pkg_dojar "${PN}".jar
+	java-pkg_dojar "drop/${PN}".jar
 }
