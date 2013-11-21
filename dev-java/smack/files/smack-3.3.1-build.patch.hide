@@ -1,0 +1,57 @@
+--- build/build.xml.orig	2013-11-20 00:21:55.973946160 -0500
++++ build/build.xml	2013-11-20 00:25:36.382939705 -0500
+@@ -110,7 +110,7 @@
+                 </fileset>
+             </classpath>
+         </javac>
+-        <mkdir dir="${compile.dir}/jingle/extension" />
++        <!--<mkdir dir="${compile.dir}/jingle/extension" />
+         <javac
+             destdir="${compile.dir}/jingle/extension"
+             includeAntRuntime="no"
+@@ -131,7 +131,7 @@
+                 </fileset>
+                                 <pathelement path="${compile.dir}"/>
+             </classpath>
+-        </javac>
++        </javac>-->
+     </target>
+ 
+     <!-- compile-test -->
+@@ -174,7 +174,6 @@
+         <jar destfile="${jar.dest.dir}/smack.jar"
+             basedir="${compile.dir}"
+             includes="org/jivesoftware/smack/**/*.class, **/smack-config.xml">
+-            <zipfileset src="${merge.lib.dir}/xpp.jar"/>
+         </jar>
+         <taskdef resource="aQute/bnd/ant/taskdef.properties" classpath="${basedir}/build/build/biz.aQute.bnd.jar"/>
+         <bndwrap jars="${jar.dest.dir}/smack.jar" output="${jar.dest.dir}/smack.jar" />
+@@ -191,7 +190,6 @@
+             <manifest>
+                 <attribute name="Class-Path" value="smack.jar" />
+             </manifest>
+-            <zipfileset src="${merge.lib.dir}/jzlib.jar"/>
+         </jar>
+         <bndwrap jars="${jar.dest.dir}/smackx.jar" output="${jar.dest.dir}/smackx.jar" />
+         <jar file="${jar.dest.dir}/smackx.jar" update="true">
+@@ -217,20 +215,6 @@
+                 <attribute name="Bundle-SymbolicName" value="org.igniterealtime.smack-ext-debug" />
+             </manifest>
+         </jar>
+-                <jar destfile="${jar.dest.dir}/smackx-jingle.jar"
+-            basedir="${compile.dir}/jingle/extension"
+-            includes="org/jivesoftware/smackx/**/*.class">
+-            <manifest>
+-                <attribute name="Class-Path" value="smack.jar, smackx.jar" />
+-            </manifest>
+-            <zipfileset src="${jingle.extension.merge.lib.dir}/jstun.jar"/>
+-        </jar>
+-        <bndwrap jars="${jar.dest.dir}/smackx-jingle.jar" output="${jar.dest.dir}/smackx-jingle.jar" />
+-        <jar file="${jar.dest.dir}/smackx-jingle.jar" update="true">
+-            <manifest>
+-                <attribute name="Bundle-SymbolicName" value="org.igniterealtime.smack-ext-jingle" />
+-            </manifest>
+-        </jar>
+         <delete file="${compile.dir}/META-INF/smack-config.xml" />
+         <delete file="${compile.dir}/META-INF/smack.providers" />
+         <delete>

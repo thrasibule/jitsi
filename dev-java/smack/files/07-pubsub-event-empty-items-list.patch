@@ -1,0 +1,15 @@
+--- source/org/jivesoftware/smackx/pubsub/Node.java.orig	2012-02-04 21:02:30.000000000 -0500
++++ source/org/jivesoftware/smackx/pubsub/Node.java	2013-11-20 20:48:08.659972583 -0500
+@@ -515,8 +515,11 @@
+ 				{
+ 					List<PacketExtension> secondLevelList = ((EmbeddedPacketExtension)embedEvent).getExtensions();
+ 					
+-					if (secondLevelList.size() > 0 && secondLevelList.get(0).getElementName().equals(secondElement))
++					// XEP-0060 allows no elements on second level
++					if (secondLevelList.size() == 0 )
+ 						return true;
++					else if (secondLevelList.size() > 0 && secondLevelList.get(0).getElementName().equals(secondElement))
++						return true;
+ 				}
+ 			}
+ 			return false;
