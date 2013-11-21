@@ -9,7 +9,7 @@ JAVA_PKG_IUSE="doc source"
 inherit java-pkg-2 java-ant-2 subversion
 
 DESCRIPTION="Jingle Relay Nodes API in java"
-HOMEPAGE=""
+HOMEPAGE="http://www.jinglenodes.org"
 ESVN_REPO_URI="http://jinglenodes.googlecode.com/svn/trunk/jnsapi_java"
 
 LICENSE="LGPL-2.1"
