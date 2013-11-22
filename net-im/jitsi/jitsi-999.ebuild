@@ -15,18 +15,26 @@ SLOT="0"
 KEYWORDS=""
 IUSE="" # FIXME: Should not use ALSA directly, unless USE="alsa", because e.g. PulseAudio could already use and block it.
 
-COMMON_DEP="dev-java/commons-httpclient:3
+COMMON_DEP="dev-java/aclibico:0
+	dev-java/commons-httpclient:3
+	dev-java/dbus-java:0
+	dev-java/dhcp4java:0
 	dev-java/dict4j:0
 	dev-java/dnsjava:2
 	dev-java/gdata:0
+	dev-java/httpcomponents-client:0
 	dev-java/httpcomponents-core:0
 	dev-java/jsip:0
 	dev-java/libjitsi:0
 	dev-java/laf-widget:4.3
 	dev-java/ice4j:0
+	dev-java/jmdns:3.4
 	dev-java/jml:0
 	dev-java/joscar:0
+	dev-java/jsch:0
 	dev-java/json-simple:0
+	dev-java/jymsg:0
+	dev-java/pircbot:0
 	dev-java/rome:0
 	dev-java/smack:3.2
 	dev-java/xpp3:0
@@ -40,7 +48,7 @@ DEPEND=">=virtual/jdk-1.6
 
 JAVA_ANT_REWRITE_CLASSPATH="true"
 EANT_BUILD_TARGET="rebuild"
-EANT_GENTOO_CLASSPATH="ant-core,apple-java-extensions-bin,bcprov,commons-httpclient-3,dnsjava-2,dict4j,gdata,ice4j,fmj,httpcomponents-core,jinglenodes,jml,joscar,jsip,json-simple,laf-widget-4.3,libjitsi,jna,osgi-core-api,rome,sdes4j,smack-3.2,xpp3,zrtp4j"
+EANT_GENTOO_CLASSPATH="aclibico,ant-core,apple-java-extensions-bin,bcprov,commons-httpclient-3,dbus-java,dnsjava-2,dhcp4java,dict4j,gdata,ice4j,fmj,httpcomponents-client,httpcomponents-core,jinglenodes,jmdns-3.4,jml,joscar,jsip,jsch,json-simple,jymsg,laf-widget-4.3,libjitsi,jna,osgi-core-api,pircbot,rome,sdes4j,smack-3.2,xpp3,zrtp4j"
 
 java_prepare() {
 	einfo "Evil jar files be gone"
