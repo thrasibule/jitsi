@@ -28,12 +28,14 @@ COMMON_DEP="dev-java/aclibico:0
 	dev-java/libjitsi:0
 	dev-java/laf-widget:4.3
 	dev-java/ice4j:0
+	dev-java/jcalendar:1.2
 	dev-java/jmdns:3.4
 	dev-java/jml:0
 	dev-java/joscar:0
 	dev-java/jsch:0
 	dev-java/json-simple:0
 	dev-java/jymsg:0
+	dev-java/otr4j:0
 	dev-java/pircbot:0
 	dev-java/rome:0
 	dev-java/smack:3.2
@@ -48,7 +50,7 @@ DEPEND=">=virtual/jdk-1.6
 
 JAVA_ANT_REWRITE_CLASSPATH="true"
 EANT_BUILD_TARGET="rebuild"
-EANT_GENTOO_CLASSPATH="aclibico,ant-core,apple-java-extensions-bin,bcprov,commons-httpclient-3,dbus-java,dnsjava-2,dhcp4java,dict4j,gdata,ice4j,fmj,httpcomponents-client,httpcomponents-core,jinglenodes,jmdns-3.4,jml,joscar,jsip,jsch,json-simple,jymsg,laf-widget-4.3,libjitsi,jna,osgi-core-api,pircbot,rome,sdes4j,smack-3.2,xpp3,zrtp4j"
+EANT_GENTOO_CLASSPATH="aclibico,ant-core,apple-java-extensions-bin,bcprov,commons-httpclient-3,dbus-java,dnsjava-2,dhcp4java,dict4j,gdata,ice4j,fmj,httpcomponents-client,httpcomponents-core,jcalendar-1.2,jinglenodes,jmdns-3.4,jml,joscar,jsip,jsch,json-simple,jymsg,otr4j,laf-widget-4.3,libjitsi,jna,osgi-core-api,otr4j,pircbot,rome,sdes4j,smack-3.2,xpp3,zrtp4j"
 
 java_prepare() {
 	einfo "Evil jar files be gone"
@@ -57,6 +59,9 @@ java_prepare() {
 	pushd src > /dev/null
 	for f in $(ag -l macwidgets); do
 		sed -i -e "/macwidgets/d" $f
+	done
+	for f in $(ag -l jdic); do
+		sed -i -e "/jdic/d" $f
 	done
 	popd > /dev/null
 	#Add jar symlinks
