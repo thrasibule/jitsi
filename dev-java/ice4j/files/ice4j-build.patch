@@ -1,0 +1,38 @@
+Add an extra target compile tests, so that we don't have to depend on junit
+if we don't build them
+
+--- build.xml.orig	2013-11-26 22:05:23.095872354 -0500
++++ build.xml	2013-11-26 22:10:22.941863573 -0500
+@@ -38,11 +38,22 @@
+                target="1.5"
+                source="1.5">
+             <src path="${src}"/>
++            <compilerarg value="-Xlint"/>
++        </javac>
++    </target>
++    <target name="compile-test" depends="init">
++	<javac classpathref="project.class.path"
++	       debug="true"
++	       deprecation="true"
++	       destdir="${dest}"
++	       nowarn="false"
++               optimize="true"
++               target="1.5"
++               source="1.5">
+             <src path="${src2}"/>
+             <compilerarg value="-Xlint"/>
+         </javac>
+     </target>
+-
+     <!-- copies ressource files if any to the classes directory -->
+     <target name="resource">
+         <copy todir="${dest}">
+@@ -134,7 +145,7 @@
+     </target>
+ 
+     <!-- Run the tests-->
+-    <target name="test">
++    <target name="test" depends="compile-test">
+         <junit haltonfailure="true" fork="true" forkmode="once">
+             <formatter type="xml"/>
+             <formatter type="brief" usefile="false"/>
