@@ -6,35 +6,34 @@ EAPI=5
 
 JAVA_PKG_IUSE="doc source"
 
-inherit java-pkg-2 java-ant-2 git-r3
+inherit java-pkg-2 java-ant-2 subversion
 
-DESCRIPTION=""
-HOMEPAGE=""
-EGIT_REPO_URI="http://github.com/Metaswitch/fmj.git"
+DESCRIPTION="An alternative to Java Media Framework"
+HOMEPAGE="http://fmj-sf.net/"
+ESVN_REPO_URI="http://svn.code.sf.net/p/fmj/code/fmj"
 
-LICENSE=""
+LICENSE="LGPL-2"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS=""
 
 IUSE=""
 
-COMMON_DEP="dev-java/jchart2d:0
-	dev-java/commons-math:3"
-
-RDEPEND=">=virtual/jre-1.5
-	${COMMON_DEP}"
+RDEPEND=">=virtual/jre-1.5"
 DEPEND=">=virtual/jdk-1.5
-	app-arch/unzip
-	${COMMON_DEP}"
+	app-arch/unzip"
 
 JAVA_ANT_REWRITE_CLASSPATH="true"
 EANT_BUILD_TARGET="jar-jitsi"
-EANT_GENTOO_CLASSPATH="commons-math-3,jchart2d"
 
-java_prepare() {
-	find . -name *.jar -delete|| die
+src_prepare() {
+	default
+	find . -name *.jar -print -delete|| die
 }
 
 src_install() {
 	java-pkg_dojar "build/jars/${PN}.jar"
+}
+
+src_test() {
+	eant build-test
 }
