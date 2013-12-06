@@ -12,7 +12,7 @@ DESCRIPTION=""
 HOMEPAGE=""
 ESVN_REPO_URI="http://sdes4j.googlecode.com/svn/trunk"
 
-LICENSE=""
+LICENSE="LGPL-2.1"
 SLOT="0"
 KEYWORDS="~x86"
 
