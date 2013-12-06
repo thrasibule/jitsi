@@ -18,6 +18,7 @@
 	</target>
 
 	<target name="compile">
+		<mkdir dir="${lib.dir}" />
 		<mkdir dir="${classes.dir}" />
 		<javac target="1.5" srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath" />
 		<copy todir="${classes.dir}">
@@ -25,6 +26,7 @@
 		</copy>
 	</target>
 	<target name="compile-test" depends="compile">
+		<mkdir dir="test" />
 		<javac target="1.5" srcdir="${test.dir}" destdir="${classes.dir}" classpathref="classpath" />
 	</target>
 	<target name="jar" depends="compile">

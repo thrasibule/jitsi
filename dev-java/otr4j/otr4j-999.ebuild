@@ -9,7 +9,7 @@ JAVA_PKG_IUSE="test"
 inherit java-pkg-2 java-ant-2 git-r3
 
 DESCRIPTION="An implementation of the OTR protocol in Java"
-HOMEPAGE=""
+HOMEPAGE="http://github.com/jitsi/otr4j"
 EGIT_REPO_URI="http://github.com/jitsi/${PN}.git"
 
 LICENSE="LGPL-3"
@@ -27,15 +27,15 @@ DEPEND=">=virtual/jdk-1.5
 	test? ( dev-java/junit:4 )
 	${COMMON_DEP}"
 
+JAVA_ANT_REWRITE_CLASSPATH="true"
+EANT_GENTOO_CLASSPATH="bcprov"
+EANT_TEST_GENTOO_CLASSPATH="${EANT_GENTOO_CLASSPATH},junit-4"
+EANT_TEST_TARGET="junit"
+EANT_TEST_ANT_TASKS="ant-junit"
+
+
 java_prepare() {
 	cp "${FILESDIR}"/build.xml "${S}" || die
-	mkdir lib|| die
-	if use test; then
-		mkdir test|| die
-	fi
-	cd lib;
-	java-pkg_jar-from bcprov
-	use test && java-pkg_jar-from junit-4
 }
 
 src_install() {
@@ -43,5 +43,5 @@ src_install() {
 }
 
 src_test() {
-	ANT_TASKS="ant-junit" eant junit
+	java-pkg-2_src_test
 }
