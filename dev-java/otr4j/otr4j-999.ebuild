@@ -11,6 +11,7 @@ inherit java-pkg-2 java-ant-2 git-r3
 DESCRIPTION="An implementation of the OTR protocol in Java"
 HOMEPAGE="http://github.com/jitsi/otr4j"
 EGIT_REPO_URI="http://github.com/jitsi/${PN}.git"
+EGIT_BRANCH="otrV3"
 
 LICENSE="LGPL-3"
 SLOT="0"
