@@ -33,7 +33,6 @@ COMMON_DEP="dev-java/bcprov:0
 	media-libs/libvpx
 	media-libs/speex
 	media-libs/opus
-	media-libs/portaudio
 	media-sound/pulseaudio
 	virtual/ffmpeg"
 
@@ -44,7 +43,7 @@ DEPEND=">=virtual/jdk-1.6
 	${COMMON_DEP}"
 
 JAVA_ANT_REWRITE_CLASSPATH="true"
-EANT_BUILD_TARGET="rebuild ffmpeg jawtrenderer video4linux2 speex screencapture opus libvpx pulseaudio g722 portaudio"
+EANT_BUILD_TARGET="rebuild ffmpeg jawtrenderer video4linux2 speex screencapture opus libvpx pulseaudio g722"
 EANT_DOC_TARGET="javadoc"
 EANT_GENTOO_CLASSPATH="bcprov,bccontrib,bcpkix,fmj,ice4j,jna,jsip,json-simple,osgi-core-api,sdes4j,zrtp4j"
 
