@@ -1,0 +1,249 @@
+--- src/native/ffmpeg/org_jitsi_impl_neomedia_codec_FFmpeg.c.orig	2014-03-05 19:33:02.068601606 -0500
++++ src/native/ffmpeg/org_jitsi_impl_neomedia_codec_FFmpeg.c	2014-03-05 19:38:38.566945917 -0500
+@@ -18,11 +18,6 @@
+ #include <libavfilter/avfiltergraph.h>
+ #include <libavfilter/buffersrc.h>
+ 
+-#ifndef _JITSI_LIBAV_
+-#include <libavfilter/formats.h> /* ff_default_query_formats, ff_make_format_list, ff_set_common_formats */
+-#include <libavfilter/internal.h> /* ff_request_frame */
+-#endif
+-
+ #include <libswscale/swscale.h>
+ 
+ #define DEFINE_AVCODECCONTEXT_F_PROPERTY_SETTER(name, property) \
+@@ -454,168 +449,6 @@
+ DEFINE_AVCODECCONTEXT_I_PROPERTY_SETTER(trellis, trellis)
+ DEFINE_AVCODECCONTEXT_I_PROPERTY_SETTER(workaround_1bugs, workaround_bugs)
+ 
+-JNIEXPORT jlong JNICALL
+-Java_org_jitsi_impl_neomedia_codec_FFmpeg_avfilter_1graph_1alloc
+-    (JNIEnv *env, jclass clazz)
+-{
+-    return (jlong) (intptr_t) avfilter_graph_alloc();
+-}
+-
+-JNIEXPORT jint JNICALL
+-Java_org_jitsi_impl_neomedia_codec_FFmpeg_avfilter_1graph_1config
+-    (JNIEnv *env, jclass clazz, jlong graph, jlong log_ctx)
+-{
+-    return
+-        (jint)
+-            avfilter_graph_config(
+-                    (AVFilterGraph *) (intptr_t) graph,
+-                    (AVClass *) (intptr_t) log_ctx);
+-}
+-
+-JNIEXPORT void JNICALL
+-Java_org_jitsi_impl_neomedia_codec_FFmpeg_avfilter_1graph_1free
+-    (JNIEnv *env, jclass clazz, jlong graph)
+-{
+-    AVFilterGraph *graph_ = (AVFilterGraph *) (intptr_t) graph;
+-
+-    avfilter_graph_free(&graph_);
+-}
+-
+-JNIEXPORT jlong JNICALL
+-Java_org_jitsi_impl_neomedia_codec_FFmpeg_avfilter_1graph_1get_1filter
+-    (JNIEnv *env, jclass clazz, jlong graph, jstring name)
+-{
+-    const char *name_ = (*env)->GetStringUTFChars(env, name, NULL);
+-    AVFilterContext *filter;
+-
+-    if (name_)
+-    {
+-        filter
+-            = avfilter_graph_get_filter(
+-                    (AVFilterGraph *) (intptr_t) graph,
+-                    (char *) name_);
+-        (*env)->ReleaseStringUTFChars(env, name, name_);
+-    }
+-    else
+-        filter = NULL;
+-    return (jlong) (intptr_t) filter;
+-}
+-
+-static int
+-ffsink_end_frame(AVFilterLink *link)
+-{
+-    if (link->cur_buf)
+-        link->dst->priv = avfilter_ref_buffer(link->cur_buf, ~0);
+-    return 0;
+-}
+-
+-static int
+-ffsink_query_formats(AVFilterContext *ctx)
+-{
+-    AVFilterContext *src = ctx;
+-    int err;
+-
+-    /* Find buffer. */
+-#ifdef _JITSI_LIBAV_
+-    while (src && src->input_count && src->inputs)
+-#else
+-    while (src && src->nb_inputs && src->inputs)
+-#endif
+-    {
+-        AVFilterLink *link = src->inputs[0];
+-
+-        if (link)
+-            src = link->src;
+-        else
+-            break;
+-    }
+-
+-    /* Make ffsink output in the format in which buffer inputs. */
+-    if (src)
+-    {
+-        const int pix_fmts[] = { src->outputs[0]->in_formats->formats[0], -1 };
+-
+-#ifdef _JITSI_LIBAV_
+-        avfilter_set_common_formats(ctx, ff_make_format_list(pix_fmts));
+-#else
+-        ff_set_common_formats(ctx, ff_make_format_list(pix_fmts));
+-#endif
+-
+-        err = 0;
+-    }
+-    else
+-#ifdef _JITSI_LIBAV_
+-        err = query_formats(ctx);
+-#else
+-        err = ff_default_query_formats(ctx);
+-#endif
+-
+-    return err;
+-}
+-
+-static void
+-ffsink_uninit(AVFilterContext *ctx)
+-{
+-    ctx->priv = NULL;
+-}
+-
+-JNIEXPORT jint JNICALL
+-Java_org_jitsi_impl_neomedia_codec_FFmpeg_avfilter_1graph_1parse
+-    (JNIEnv *env, jclass clazz,
+-    jlong graph, jstring filters, jlong inputs, jlong outputs, jlong log_ctx)
+-{
+-    const char *filters_ = (*env)->GetStringUTFChars(env, filters, NULL);
+-    int ret;
+-
+-    if (filters_)
+-    {
+-        AVFilterGraph *graph_ = (AVFilterGraph *) (intptr_t) graph;
+-
+-        ret
+-            = avfilter_graph_parse(
+-                    graph_,
+-                    filters_,
+-                    (AVFilterInOut **) (intptr_t) inputs,
+-                    (AVFilterInOut **) (intptr_t) outputs,
+-                    (AVClass *) (intptr_t) log_ctx);
+-
+-        /*
+-         * FIXME The implementation at the time of this writing presumes that
+-         * the first filter is buffer, the last filter is nullsink meant to be
+-         * ffsink and the ffsink is expected to output in the format in which
+-         * the buffer inputs.
+-         */
+-        if (0 == ret)
+-        {
+-            /* Turn nullsink into ffsink. */
+-            unsigned filterCount = graph_->filter_count;
+-
+-            if (filterCount)
+-            {
+-                AVFilterContext *ffsink = graph_->filters[filterCount - 1];
+-
+-                /*
+-                 * Make sure query_format of ffsink outputs in the format in
+-                 * which buffer inputs. Otherwise, the output format may end up
+-                 * different on the C and Java sides.
+-                 */
+-                ffsink->filter->uninit = ffsink_uninit;
+-                ffsink->priv = NULL;
+-                ffsink->filter->query_formats = ffsink_query_formats;
+-
+-                ffsink->input_pads->end_frame = ffsink_end_frame;
+-                ffsink->input_pads->min_perms = AV_PERM_READ;
+-                ffsink->input_pads->start_frame = NULL;
+-            }
+-        }
+-
+-        (*env)->ReleaseStringUTFChars(env, filters, filters_);
+-    }
+-    else
+-        ret = AVERROR(ENOMEM);
+-    return (jint) ret;
+-}
+-
+ JNIEXPORT void JNICALL
+ Java_org_jitsi_impl_neomedia_codec_FFmpeg_avfilter_1register_1all
+     (JNIEnv *env, jclass clazz)
+@@ -623,13 +456,6 @@
+     avfilter_register_all();
+ }
+ 
+-JNIEXPORT void JNICALL
+-Java_org_jitsi_impl_neomedia_codec_FFmpeg_avfilter_1unref_1buffer
+-    (JNIEnv *env, jclass clazz, jlong ref)
+-{
+-    avfilter_unref_buffer((AVFilterBufferRef *) (intptr_t) ref);
+-}
+-
+ JNIEXPORT jlong JNICALL
+ Java_org_jitsi_impl_neomedia_codec_FFmpeg_avframe_1get_1pts
+     (JNIEnv *env, jclass clazz, jlong frame)
+@@ -693,51 +519,6 @@
+                     (int) width, (int) height);
+ }
+ 
+-JNIEXPORT jlong JNICALL
+-Java_org_jitsi_impl_neomedia_codec_FFmpeg_get_1filtered_1video_1frame
+-    (JNIEnv *env, jclass clazz,
+-    jlong input, jint width, jint height, jint pixFmt,
+-    jlong buffer, jlong ffsink, jlong output)
+-{
+-    AVFrame *input_ = (AVFrame *) (intptr_t) input;
+-    AVFilterContext *buffer_ = (AVFilterContext *) (intptr_t) buffer;
+-    AVFilterBufferRef *ref = NULL;
+-
+-    input_->width = width;
+-    input_->height = height;
+-    input_->format = pixFmt;
+-    if (av_buffersrc_write_frame(buffer_, input_) == 0)
+-    {
+-        AVFilterContext *ffsink_ = (AVFilterContext *) (intptr_t) ffsink;
+-
+-        if (ff_request_frame(ffsink_->inputs[0]) == 0)
+-        {
+-            ref = (AVFilterBufferRef *) (ffsink_->priv);
+-            if (ref)
+-            {
+-                AVFrame *output_ = (AVFrame *) (intptr_t) output;
+-
+-                /*
+-                 * The data of cur_buf will be returned into output so it needs
+-                 * to exist at least while output needs it. So take ownership of
+-                 * cur_buf and the user of output will unref it when they are
+-                 * done with output.
+-                 */
+-                ffsink_->priv = NULL;
+-
+-                memcpy(output_->data, ref->data, sizeof(output_->data));
+-                memcpy(
+-                    output_->linesize,
+-                    ref->linesize,
+-                    sizeof(output_->linesize));
+-                output_->interlaced_frame = ref->video->interlaced;
+-                output_->top_field_first = ref->video->top_field_first;
+-            }
+-        }
+-    }
+-    return (jlong) (intptr_t) ref;
+-}
+-
+ JNIEXPORT void JNICALL
+ Java_org_jitsi_impl_neomedia_codec_FFmpeg_memcpy___3IIIJ
+     (JNIEnv *env, jclass clazz,
