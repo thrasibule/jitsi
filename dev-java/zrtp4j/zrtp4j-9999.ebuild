@@ -12,6 +12,7 @@ DESCRIPTION="A ZRTP implementation in Java"
 HOMEPAGE=""
 EGIT_REPO_URI="http://github.com/wernerd/ZRTP4J.git"
 
+<<<<<<< HEAD
 LICENSE="BSD GPL-2-with-linking-exception GPL-3"
 SLOT="0"
 KEYWORDS=""
@@ -19,7 +20,8 @@ KEYWORDS=""
 IUSE=""
 
 COMMON_DEP="dev-java/bcprov:0
-	dev-java/bccontrib:0"
+	dev-java/bccontrib:0
+	media-libs/fmj:0"
 
 RDEPEND=">=virtual/jre-1.5
 	${COMMON_DEP}"
