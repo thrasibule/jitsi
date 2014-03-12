@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -38,7 +38,6 @@ EANT_TEST_ANT_TASKS="ant-junit"
 src_prepare() {
 	default
 	find . -name *.jar -print -delete ||die
-	epatch "${FILESDIR}/${PN}-build.patch"
 }
 
 src_install() {
