@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -12,7 +12,7 @@ DESCRIPTION="A ZRTP implementation in Java"
 HOMEPAGE=""
 EGIT_REPO_URI="http://github.com/wernerd/ZRTP4J.git"
 
-LICENSE=""
+LICENSE="BSD GPL-2-with-linking-exception GPL-3"
 SLOT="0"
 KEYWORDS=""
 
@@ -29,7 +29,6 @@ DEPEND=">=virtual/jdk-1.5
 	${COMMON_DEP}"
 
 JAVA_ANT_REWRITE_CLASSPATH="yes"
-EANT_DOC_TARGET=""
 EANT_GENTOO_CLASSPATH="bcprov,bccontrib,fmj,junit"
 
 java_prepare() {
