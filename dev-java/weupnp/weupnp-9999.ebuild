@@ -12,7 +12,7 @@ DESCRIPTION="A tiny UPnP client library written in Java"
 HOMEPAGE="http://bitletorg.github.io/weupnp/"
 EGIT_REPO_URI="http://github.com/bitletorg/weupnp.git"
 
-LICENSE="LGPL"
+LICENSE="LGPL-2.1"
 SLOT="0"
 KEYWORDS="~x86"
 
@@ -20,14 +20,14 @@ IUSE=""
 
 RDEPEND=">=virtual/jre-1.5"
 DEPEND=">=virtual/jdk-1.5
-  app-arch/unzip"
+	app-arch/unzip"
 
 java_prepare() {
 	cp "${FILESDIR}"/build.xml .
 }
 
 src_install() {
-  java-pkg_dojar "dist/lib/${PN}.jar"
-  use doc && java-pkg_dojavadoc build/javadoc
-  use source && java-pkg_dosrc src
+	java-pkg_dojar "dist/lib/${PN}.jar"
+	use doc && java-pkg_dojavadoc build/javadoc
+	use source && java-pkg_dosrc src
 }
